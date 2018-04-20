@@ -1,0 +1,95 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="session"
+            type="eu.adcharge.api.entities.AdSession" />
+
+        <variable
+            name="error"
+            type="String" />
+
+        <variable
+            name="tasksInProgress"
+            type="Integer" />
+
+        <variable
+            name="call"
+            type="boolean" />
+    </data>
+
+    <LinearLayout xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        tools:context=".IncomingCallActivity">
+
+        <ProgressBar
+            android:id="@+id/progress"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:visibility="@{tasksInProgress > 0 ? View.VISIBLE : View.GONE}" />
+
+
+        <TextView
+            android:id="@+id/loginErrorMsg"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            android:text="@{error}"
+            android:textSize="16sp"
+            android:visibility="@{error.empty ? View.GONE : View.VISIBLE}" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="24dp"
+                    android:text="@{`session: `+session.session_id}"
+                    android:textSize="16sp" />
+
+                <Button
+                    android:id="@+id/getIncomingCall"
+                    style="?android:textAppearanceSmall"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:onClick="getIncomingCall"
+                    android:text="@string/get_incoming_call"
+                    android:textStyle="bold"
+                    android:visibility="@{call ? View.GONE : View.VISIBLE}" />
+
+                <Button
+                    android:id="@+id/checkSession"
+                    style="?android:textAppearanceSmall"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:onClick="checkSession"
+                    android:text="@string/check_session"
+                    android:textStyle="bold"
+                    android:visibility="@{call ? View.VISIBLE : View.GONE}" />
+
+
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+</layout>

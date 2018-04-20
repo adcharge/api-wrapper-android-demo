@@ -4,11 +4,31 @@
     <!-- Strings related to login -->
     <string name="prompt_login">Login</string>
     <string name="prompt_password">Password</string>
-    <string name="action_sign_in">Sign in</string>
+    <string name="action_sign_in">Login</string>
     <string name="error_invalid_email">This email address is invalid</string>
     <string name="error_invalid_password">This password is too short</string>
     <string name="error_incorrect_password">This password is incorrect</string>
     <string name="error_field_required">This field is required</string>
 
     <string name="title_activity_main">MainActivity</string>
+    <string name="action_sign_up">Register</string>
+    <string name="logout">Logout</string>
+    <string name="save">Save</string>
+    <string name="male">Male</string>
+    <string name="female">Female</string>
+    <string name="gender">Gender</string>
+    <string name="get_session">Get session</string>
+    <string name="edit_user">Edit User</string>
+    <string name="shown">Mark as shown</string>
+    <string name="like">Like</string>
+    <string name="dislike">Dislike</string>
+    <string name="hide">Never show again</string>
+    <string name="check_session">Check is session expired</string>
+    <string name="small_banner">Small banner</string>
+    <string name="big_banner">Big banner</string>
+    <string name="birthday">Birthday</string>
+    <string name="get_incoming_call">Get Incoming call</string>
+    <string name="finish_call">Finish call</string>
+    <string name="click">Follow URL</string>
+    <string name="go_to_get_new_session">Go to get new session</string>
 </resources>

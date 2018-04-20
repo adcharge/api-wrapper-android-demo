@@ -1,0 +1,165 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <import
+            alias="Gender"
+            type="eu.adcharge.api.entities.Gender" />
+
+        <variable
+            name="user"
+            type="eu.adcharge.api.entities.User" />
+
+        <variable
+            name="latitude"
+            type="Double" />
+
+        <variable
+            name="longitude"
+            type="Double" />
+
+        <variable
+            name="error"
+            type="String" />
+
+        <variable
+            name="tasksInProgress"
+            type="Integer" />
+    </data>
+
+    <LinearLayout xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        tools:context=".ProfileActivity">
+
+        <ProgressBar
+            android:id="@+id/progress"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:visibility="@{tasksInProgress > 0 ? View.VISIBLE : View.GONE}" />
+
+
+        <TextView
+            android:id="@+id/loginErrorMsg"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            android:text="@{error}"
+            android:textSize="16sp"
+            android:visibility="@{error.empty ? View.GONE : View.VISIBLE}" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:gravity="center"
+                    android:text="@string/edit_user"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+
+                <RadioGroup
+                    android:id="@+id/gender"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:text="@string/gender"
+                    android:weightSum="2">
+
+                    <RadioButton
+                        android:id="@+id/female"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:onClick="setFemale"
+                        android:checked="@{user.gender==Gender.FEMALE}"
+                        android:text="@string/female" />
+
+                    <RadioButton
+                        android:id="@+id/male"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:onClick="setMale"
+                        android:checked="@{user.gender==Gender.MALE}"
+                        android:text="@string/male" />
+
+                </RadioGroup>
+
+                <Button
+                    style="?android:textAppearanceSmall"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:onClick="showDatePickerDialog"
+                    android:text="@{@string/birthday+`: `+demo.app.adcharge.eu.adchargedemo.ProfileActivity.formatDate(user.birthday)}"
+                    android:textStyle="bold" />
+
+
+                <Button
+                    android:id="@+id/save"
+                    style="?android:textAppearanceSmall"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:onClick="saveUser"
+                    android:text="@string/save"
+                    android:textStyle="bold" />
+
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:gravity="center"
+                    android:text="@{`Location lat:`+latitude+` lng:`+longitude}"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/getSession"
+                    style="?android:textAppearanceSmall"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:onClick="getSession"
+                    android:text="@string/get_session"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/logout"
+                    style="?android:textAppearanceSmall"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:onClick="logout"
+                    android:text="@string/logout"
+                    android:textStyle="bold" />
+
+
+            </LinearLayout>
+        </ScrollView>
+
+
+    </LinearLayout>
+</layout>

@@ -6,52 +6,44 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.Toast;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 
-import demo.app.adcharge.eu.adchargedemo.databinding.ActivityLoginBinding;
+import demo.app.adcharge.eu.adchargedemo.databinding.ActivityRegisterBinding;
 import eu.adcharge.api.AdCharge;
 import eu.adcharge.api.ApiException;
 import eu.adcharge.api.ApiValidationException;
-import eu.adcharge.api.util.TokenHolder;
 
-public class LoginActivity extends AppCompatActivity {
-
-    private ActivityLoginBinding binding;
+public class RegisterActivity extends AppCompatActivity {
+    private ActivityRegisterBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        try {
-            AdCharge.init(BuildConfig.SERVER_URL, new TokenHolder(getApplicationContext()));
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-            finish();
-        }
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_login);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_register);
         binding.setTasksInProgress(0);
         binding.setLogin("");
         binding.setPassword("");
     }
 
-    public void openRegister(View view) {
-        Intent registerActivity = new Intent(getApplicationContext(), RegisterActivity.class);
-        registerActivity.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        startActivity(registerActivity);
+    public void openLogin(View view) {
+        Intent loginActivity = new Intent(getApplicationContext(), LoginActivity.class);
+        loginActivity.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(loginActivity);
     }
 
-    public void attemptLogin(View view) {
-        new LoginTask(binding.getLogin(), binding.getPassword()).execute();
+    public void attemptRegister(View view) {
+        new RegisterUserTask(binding.getLogin(), binding.getPassword()).execute();
     }
 
-    private class LoginTask extends AsyncTask<String, Void, Void> {
+    private class RegisterUserTask extends AsyncTask<String, Void, Void> {
         private final String login;
         private final String pass;
         private ApiValidationException validationException;
 
 
-        public LoginTask(String login, String password) {
+        public RegisterUserTask(String login, String password) {
             this.login = login;
             this.pass = password;
         }
@@ -59,11 +51,10 @@ public class LoginActivity extends AppCompatActivity {
         @Override
         protected Void doInBackground(String... strings) {
             try {
-                AdCharge.login(login, pass, BuildConfig.INDIVIDUAL_KEY);
-                Intent profileActivity = new Intent(getApplicationContext(), ProfileActivity.class);
-                profileActivity.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                profileActivity.putExtra("username", binding.getLogin());
-                startActivity(profileActivity);
+                AdCharge.registerSubscriberUser(login, pass, BuildConfig.INDIVIDUAL_KEY);
+                Intent loginActivity = new Intent(getApplicationContext(), LoginActivity.class);
+                loginActivity.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(loginActivity);
             } catch (IOException e) {
                 binding.setError(e.getMessage());
             } catch (ApiException e) {
@@ -77,7 +68,7 @@ public class LoginActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            if (validationException != null)
+            if (validationException != null) {
                 for (ApiValidationException.Error fieldError : validationException.getFieldErrors()) {
                     String field = fieldError.getField();
                     String message = fieldError.getMessages().isEmpty() ? "" : fieldError.getMessages().get(0);
@@ -89,9 +80,10 @@ public class LoginActivity extends AppCompatActivity {
                         binding.setError(message);
                     }
                 }
+            } else {
+                Toast.makeText(getApplicationContext(), "success", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
-
 }
-
