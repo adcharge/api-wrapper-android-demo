@@ -30,6 +30,7 @@ dependencies {
     implementation project(':adcharge_api_sdk-release')
     implementation group: 'com.squareup.okhttp3', name: 'okhttp', version: '3.8.1'
     implementation "com.squareup.okhttp3:okhttp-urlconnection:3.0.0-RC1"
+    implementation group: 'com.squareup.okhttp3', name: 'logging-interceptor', version: '3.10.0'
     implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.7.5'
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
