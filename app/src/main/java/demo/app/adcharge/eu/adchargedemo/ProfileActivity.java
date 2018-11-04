@@ -19,6 +19,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -37,6 +38,8 @@ import eu.adcharge.api.entities.Gender;
 import eu.adcharge.api.entities.User;
 
 public class ProfileActivity extends AppCompatActivity implements OnDateSelectedListener {
+    private AdCharge sdk;
+
 
     private final int MY_PERMISSIONS_REQUEST = 1;
     private ActivityProfileBinding binding;
@@ -56,7 +59,7 @@ public class ProfileActivity extends AppCompatActivity implements OnDateSelected
         new AsyncTask() {
             @Override
             protected Object doInBackground(Object[] objects) {
-                AdCharge.logout();
+                sdk.logout();
                 Intent loginActivity = new Intent(getApplicationContext(), LoginActivity.class);
                 loginActivity.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(loginActivity);
@@ -73,6 +76,12 @@ public class ProfileActivity extends AppCompatActivity implements OnDateSelected
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        try {
+            sdk = new AdCharge(BuildConfig.SERVER_URL, getApplicationContext());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+            finish();
+        }
         binding = DataBindingUtil.setContentView(this, R.layout.activity_profile);
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -144,7 +153,7 @@ public class ProfileActivity extends AppCompatActivity implements OnDateSelected
         protected Void doInBackground(String... strings) {
             binding.setTasksInProgress(binding.getTasksInProgress() + 1);
             try {
-                AdCharge.saveUser(binding.getUser());
+                sdk.saveUser(binding.getUser());
             } catch (IOException e) {
                 binding.setError(e.getMessage());
             } catch (ApiException e) {
@@ -179,7 +188,7 @@ public class ProfileActivity extends AppCompatActivity implements OnDateSelected
         protected User doInBackground(String... strings) {
             try {
                 binding.setTasksInProgress(binding.getTasksInProgress() + 1);
-                return AdCharge.getUserInfo();
+                return sdk.getUserInfo();
             } catch (IOException e) {
                 binding.setError(e.getMessage());
             } catch (ApiException e) {
@@ -212,7 +221,7 @@ public class ProfileActivity extends AppCompatActivity implements OnDateSelected
         protected AdSession doInBackground(String... strings) {
             try {
                 binding.setTasksInProgress(binding.getTasksInProgress() + 1);
-                return AdCharge.getAdvert(new GeoPosition(binding.getLatitude(), binding.getLongitude()), BannersPreloadPolicy.BOTH_BANNERS_PRELOAD);
+                return sdk.getAdvert(new GeoPosition(binding.getLatitude(), binding.getLongitude()), BannersPreloadPolicy.BOTH_BANNERS_PRELOAD);
             } catch (IOException e) {
                 binding.setError(e.getMessage());
             } catch (ApiException e) {

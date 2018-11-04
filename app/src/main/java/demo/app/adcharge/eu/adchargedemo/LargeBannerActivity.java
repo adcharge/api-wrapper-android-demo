@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 
 import demo.app.adcharge.eu.adchargedemo.databinding.ActivityLargeBannerBinding;
 import demo.app.adcharge.eu.adchargedemo.util.SessionHolder;
@@ -22,6 +23,7 @@ import eu.adcharge.api.entities.Feedback;
 public class LargeBannerActivity extends AppCompatActivity {
 
     private ActivityLargeBannerBinding binding;
+    private AdCharge sdk;
 
     public void openProfile(View view) {
         Intent profileActivity = new Intent(getApplicationContext(), ProfileActivity.class);
@@ -32,6 +34,12 @@ public class LargeBannerActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        try {
+            sdk = new AdCharge(BuildConfig.SERVER_URL, getApplicationContext());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+            finish();
+        }
         binding = DataBindingUtil.setContentView(this, R.layout.activity_large_banner);
         binding.setTasksInProgress(0);
         Bundle bundle = getIntent().getExtras();
@@ -80,7 +88,7 @@ public class LargeBannerActivity extends AppCompatActivity {
         protected Void doInBackground(String... strings) {
             binding.setTasksInProgress(binding.getTasksInProgress() + 1);
             try {
-                AdCharge.feedback(binding.getSession(), feedback);
+                sdk.feedback(binding.getSession(), feedback);
             } catch (IOException e) {
                 binding.setError(e.getMessage());
             } catch (ApiException e) {

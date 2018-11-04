@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 
 import demo.app.adcharge.eu.adchargedemo.databinding.ActivityRegisterBinding;
 import eu.adcharge.api.AdCharge;
@@ -17,10 +18,17 @@ import eu.adcharge.api.ApiValidationException;
 
 public class RegisterActivity extends AppCompatActivity {
     private ActivityRegisterBinding binding;
+    private AdCharge sdk;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        try {
+            sdk = new AdCharge(BuildConfig.SERVER_URL, getApplicationContext());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+            finish();
+        }
         binding = DataBindingUtil.setContentView(this, R.layout.activity_register);
         binding.setTasksInProgress(0);
         binding.setLogin("");
@@ -51,7 +59,7 @@ public class RegisterActivity extends AppCompatActivity {
         @Override
         protected Void doInBackground(String... strings) {
             try {
-                AdCharge.registerSubscriberUser(login, pass, BuildConfig.INDIVIDUAL_KEY);
+                sdk.registerSubscriberUser(login, pass, BuildConfig.INDIVIDUAL_KEY);
                 Intent loginActivity = new Intent(getApplicationContext(), LoginActivity.class);
                 loginActivity.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(loginActivity);

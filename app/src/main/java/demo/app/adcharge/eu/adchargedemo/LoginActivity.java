@@ -19,12 +19,13 @@ import eu.adcharge.api.util.TokenHolder;
 public class LoginActivity extends AppCompatActivity {
 
     private ActivityLoginBinding binding;
+    private AdCharge sdk;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         try {
-            AdCharge.init(BuildConfig.SERVER_URL, new TokenHolder(getApplicationContext()));
+            sdk = new AdCharge(BuildConfig.SERVER_URL, getApplicationContext());
         } catch (MalformedURLException e) {
             e.printStackTrace();
             finish();
@@ -59,7 +60,7 @@ public class LoginActivity extends AppCompatActivity {
         @Override
         protected Void doInBackground(String... strings) {
             try {
-                AdCharge.login(login, pass, BuildConfig.INDIVIDUAL_KEY);
+                sdk.login(login, pass, BuildConfig.INDIVIDUAL_KEY);
                 Intent profileActivity = new Intent(getApplicationContext(), ProfileActivity.class);
                 profileActivity.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 profileActivity.putExtra("username", binding.getLogin());

@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 
 import demo.app.adcharge.eu.adchargedemo.databinding.ActivityIncomingCallBinding;
 import demo.app.adcharge.eu.adchargedemo.util.SessionHolder;
@@ -20,9 +21,16 @@ import eu.adcharge.api.entities.AdSession;
 public class IncomingCallActivity extends AppCompatActivity {
 
     private ActivityIncomingCallBinding binding;
+    private AdCharge sdk;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        try {
+            sdk = new AdCharge(BuildConfig.SERVER_URL, getApplicationContext());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+            finish();
+        }
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_incoming_call);
         binding.setTasksInProgress(0);
@@ -46,7 +54,7 @@ public class IncomingCallActivity extends AppCompatActivity {
         protected Void doInBackground(String... strings) {
             binding.setTasksInProgress(binding.getTasksInProgress() + 1);
             try {
-                AdCharge.validateSession(binding.getSession());
+                sdk.validateSession(binding.getSession());
                 Intent smallBannerActivity = new Intent(getApplicationContext(), SmallBannerActivity.class);
                 smallBannerActivity.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 smallBannerActivity.putExtras(getIntent().getExtras());
