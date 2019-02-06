@@ -16,7 +16,6 @@ import demo.app.adcharge.eu.adchargedemo.databinding.ActivityLargeBannerBinding;
 import demo.app.adcharge.eu.adchargedemo.util.SessionHolder;
 import eu.adcharge.api.AdCharge;
 import eu.adcharge.api.ApiException;
-import eu.adcharge.api.ApiValidationException;
 import eu.adcharge.api.entities.AdSession;
 import eu.adcharge.api.entities.Feedback;
 
@@ -78,7 +77,6 @@ public class LargeBannerActivity extends AppCompatActivity {
 
     private class FeedbackTask extends AsyncTask<String, Void, Void> {
         private final Feedback feedback;
-        private ApiValidationException validationException;
 
         public FeedbackTask(Feedback feedback) {
             this.feedback = feedback;
@@ -93,8 +91,6 @@ public class LargeBannerActivity extends AppCompatActivity {
                 binding.setError(e.getMessage());
             } catch (ApiException e) {
                 binding.setError(e.getMessage());
-            } catch (ApiValidationException e) {
-                validationException = e;//to be processed in ui thread
             }
             return null;
         }
@@ -102,11 +98,7 @@ public class LargeBannerActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            if (validationException != null) {
-                binding.setError("error");
-            } else {
-                Toast.makeText(getApplicationContext(), "feedback " + feedback.toString() + " sent", Toast.LENGTH_SHORT).show();
-            }
+            Toast.makeText(getApplicationContext(), "feedback " + feedback.toString() + " sent", Toast.LENGTH_SHORT).show();
             binding.setTasksInProgress(binding.getTasksInProgress() - 1);
         }
     }
