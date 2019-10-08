@@ -72,26 +72,6 @@
                     android:visibility="@{error.empty ? View.GONE : View.VISIBLE}" />
 
                 <Button
-                    android:id="@+id/like"
-                    style="?android:textAppearanceSmall"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:onClick="like"
-                    android:text="@string/like"
-                    android:textStyle="bold" />
-
-                <Button
-                    android:id="@+id/dislike"
-                    style="?android:textAppearanceSmall"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:onClick="dislike"
-                    android:text="@string/dislike"
-                    android:textStyle="bold" />
-
-                <Button
                     android:id="@+id/hide"
                     style="?android:textAppearanceSmall"
                     android:layout_width="match_parent"

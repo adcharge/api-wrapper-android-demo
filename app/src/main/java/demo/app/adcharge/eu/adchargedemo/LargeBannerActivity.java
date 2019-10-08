@@ -48,14 +48,6 @@ public class LargeBannerActivity extends AppCompatActivity {
         binding.largeImage.setImageBitmap(session.getBigBanner());
     }
 
-    public void like(View view) {
-        new FeedbackTask(Feedback.LIKE).execute();
-    }
-
-    public void dislike(View view) {
-        new FeedbackTask(Feedback.DISLIKE).execute();
-    }
-
     public void hide(View view) {
         new FeedbackTask(Feedback.HIDE_BANNER).execute();
         openProfile(view);
